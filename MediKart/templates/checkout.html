@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+
+<div class="container section">
+
+    <h2>Checkout</h2>
+
+    <div class="two">
+
+        <!-- LEFT SIDE -->
+        <div class="formbox">
+
+            <h3>Delivery Address</h3>
+
+            {% if addresses %}
+
+                {% for a in addresses %}
+
+                <label class="checkout-address">
+
+                    <input
+                        type="radio"
+                        name="address_id"
+                        value="{{ a.id }}"
+                        form="checkout-form"
+                        {% if a.is_default %}
+                            checked
+                        {% elif loop.first and not addresses|selectattr('is_default')|list %}
+                            checked
+                        {% endif %}
+                    >
+
+                    <div>
+
+                        <strong>{{ a.label }}</strong>
+
+                        {% if a.is_default %}
+                            <span class="default-badge">
+                                Default
+                            </span>
+                        {% endif %}
+
+                        <p>
+                            {{ a.line1 }}<br>
+                            {{ a.city }}, {{ a.state }} - {{ a.pincode }}
+                        </p>
+
+                        <p>
+                            📞 {{ a.phone }}
+                        </p>
+
+                    </div>
+
+                </label>
+
+                {% endfor %}
+
+                <a href="{{ url_for('addresses') }}" class="small-link">
+                    + Add / Manage Addresses
+                </a>
+
+            {% else %}
+
+                <p>No saved address found.</p>
+
+                <a href="{{ url_for('addresses') }}" class="btn">
+                    Add Address
+                </a>
+
+            {% endif %}
+
+
+            <hr>
+
+            <h3>Payment Method</h3>
+
+            <label class="payment-option">
+
+                <input
+                    type="radio"
+                    name="payment_method"
+                    value="COD"
+                    form="checkout-form"
+                    checked
+                >
+
+                <span>
+                    <strong>Cash on Delivery</strong>
+                    <small>Pay when your order arrives.</small>
+                </span>
+
+            </label>
+
+
+            <label class="payment-option">
+
+                <input
+                    type="radio"
+                    name="payment_method"
+                    value="Demo Payment"
+                    form="checkout-form"
+                >
+
+                <span>
+                    <strong>Demo Payment</strong>
+                    <small>For project demonstration.</small>
+                </span>
+
+            </label>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="card">
+
+            <h3>Order Summary</h3>
+
+            {% for x in items %}
+
+            <div class="checkout-item">
+
+                <div>
+                    <strong>{{ x.name }}</strong>
+
+                    <p>
+                        Quantity: {{ x.quantity }}
+                    </p>
+                </div>
+
+                <strong>
+                    ₹{{ "%.2f"|format(x.line_total) }}
+                </strong>
+
+            </div>
+
+            {% endfor %}
+
+
+            <hr>
+
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong>₹{{ "%.2f"|format(subtotal) }}</strong>
+            </div>
+
+
+            <div class="summary-row">
+                <span>Discount</span>
+                <strong>- ₹{{ "%.2f"|format(discount) }}</strong>
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>Delivery</span>
+
+                <strong>
+                    {% if delivery == 0 %}
+                        FREE
+                    {% else %}
+                        ₹{{ "%.2f"|format(delivery) }}
+                    {% endif %}
+                </strong>
+
+            </div>
+
+
+            <hr>
+
+
+            <div class="summary-total">
+
+                <span>Total</span>
+
+                <strong>
+                    ₹{{ "%.2f"|format(total) }}
+                </strong>
+
+            </div>
+
+
+            <form
+                method="POST"
+                id="checkout-form"
+                action="{{ url_for('checkout') }}"
+            >
+
+                <button
+                    type="submit"
+                    class="btn checkout-btn"
+                    {% if not addresses %}disabled{% endif %}
+                >
+                    🛒 Place Order
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

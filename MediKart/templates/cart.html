@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}Cart - MediKart{% endblock %}
+
+{% block content %}
+
+<section class="container section">
+
+    <h2>Your Cart</h2>
+
+    {% if items %}
+
+    <!-- Cart Items -->
+    <div class="tablewrap">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Medicine</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for x in items %}
+
+                <tr>
+
+                    <!-- Medicine -->
+                    <td>
+                        <strong>{{ x.name }}</strong>
+                    </td>
+
+                    <!-- Quantity -->
+                    <td>
+
+                        <input
+                            class="qty"
+                            type="number"
+                            min="1"
+                            max="{{ x.stock }}"
+                            value="{{ x.quantity }}"
+                            onchange="updateCart({ xci_id }, this.value)"
+                            aria-label="Quantity for {{ x.name }}"
+                        >
+
+                    </td>
+
+                    <!-- Price -->
+                    <td>
+                        ₹{{ "%.2f"|format(x.line_total) }}
+                    </td>
+
+                    <!-- Remove -->
+                    <td>
+
+                        <button
+                            type="button"
+                            class="btn danger small"
+                            onclick="removeCart({ xci_id })"
+                        >
+                            Remove
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- Order Summary -->
+    <div class="summary">
+
+        <h3>Order Summary</h3>
+
+        <p>
+            <strong>Subtotal:</strong>
+            ₹{{ "%.2f"|format(subtotal) }}
+        </p>
+
+        <p>
+            <strong>Discount:</strong>
+            ₹{{ "%.2f"|format(discount) }}
+        </p>
+
+        <p>
+            <strong>Delivery:</strong>
+            ₹{{ "%.2f"|format(delivery) }}
+        </p>
+
+        <hr>
+
+        <h2>
+            Total: ₹{{ "%.2f"|format(total) }}
+        </h2>
+
+        <a
+            class="btn"
+            href="/checkout"
+        >
+            Proceed to Checkout
+        </a>
+
+        <a
+            class="btn secondary"
+            href="/medicines"
+        >
+            Continue Shopping
+        </a>
+
+    </div>
+
+
+    {% else %}
+
+    <!-- Empty Cart -->
+    <div class="card">
+
+        <h3>Your Cart is Empty</h3>
+
+        <p>
+            You haven't added any medicines to your cart yet.
+        </p>
+
+        <a
+            class="btn"
+            href="/medicines"
+        >
+            Browse Medicines
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

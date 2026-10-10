@@ -1,0 +1,55 @@
+@app.route("/admin")
+@login_required
+def admin_dashboard():
+
+    user_id = session["user_id"]
+
+    # Check admin
+    user = query("""
+        SELECT role
+        FROM users
+        WHERE id = %s
+    """, (user_id,))
+
+    if not user or user[0]["role"] != "admin":
+        flash("Admin access required.", "error")
+        return redirect(url_for("index"))
+
+    stats = {}
+
+    stats["total_medicines"] = query("""
+        SELECT COUNT(*) AS total
+        FROM medicines
+    """)[0]["total"]
+
+    stats["total_categories"] = query("""
+        SELECT COUNT(*) AS total
+        FROM categories
+    """)[0]["total"]
+
+    stats["total_users"] = query("""
+        SELECT COUNT(*) AS total
+        FROM users
+        WHERE role != 'admin'
+    """)[0]["total"]
+
+    stats["total_orders"] = query("""
+        SELECT COUNT(*) AS total
+        FROM orders
+    """)[0]["total"]
+
+    stats["pending_orders"] = query("""
+        SELECT COUNT(*) AS total
+        FROM orders
+        WHERE status = 'Placed'
+    """)[0]["total"]
+
+    stats["prescriptions"] = query("""
+        SELECT COUNT(*) AS total
+        FROM prescriptions
+    """)[0]["total"]
+
+    return render_template(
+        "admin/dashboard.html",
+        stats=stats
+    )

@@ -1,0 +1,99 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}{{ medicine.name }} | MediKart{% endblock %}
+
+{% block content %}
+<section class="container section medicine-detail-page">
+
+    <div class="medicine-detail card">
+
+        <div class="medicine-detail-content">
+
+            <a href="/" class="back-link">← Back to Shopping</a>
+
+            <span class="badge medicine-category">
+                {{ medicine.category_name }}
+            </span>
+
+            <h1>{{ medicine.name }}</h1>
+
+            <p class="medicine-brand">
+                Brand: <strong>{{ medicine.brand or 'Not specified' }}</strong>
+            </p>
+
+            <div class="medicine-info">
+                <p>
+                    <strong>Generic Name:</strong>
+                    {{ medicine.generic_name or 'Demo information' }}
+                </p>
+
+                <p>
+                    <strong>Description:</strong>
+                    {{ medicine.description or 'No description available.' }}
+                </p>
+
+                <p>
+                    <strong>Pack Size:</strong>
+                    {{ medicine.pack_size or 'N/A' }}
+                </p>
+
+                <p>
+                    <strong>Availability:</strong>
+                    {% if medicine.stock > 0 %}
+                        <span class="stock-available">
+                            In Stock ({{ medicine.stock }} available)
+                        </span>
+                    {% else %}
+                        <span class="stock-unavailable">Out of Stock</span>
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="medicine-price">
+                <span class="price-label">Price</span>
+                <h2>₹{{ "%.2f"|format(medicine.price - medicine.discount) }}</h2>
+                {% if medicine.discount > 0 %}
+                    <p class="discount-text">
+                        You save ₹{{ "%.2f"|format(medicine.discount) }}
+                    </p>
+                {% endif %}
+            </div>
+
+            {% if medicine.prescription_required %}
+                <div class="prescription-notice">
+                    <strong>Prescription Required</strong>
+                    <p>A valid prescription may be required for this medicine.</p>
+                </div>
+            {% endif %}
+
+            {% if medicine.stock > 0 %}
+                <form class="medicine-cart-form"
+                      onsubmit="addCart(event, '{{ medicine.id }}'); return false;">
+
+                    <label for="qty">Quantity</label>
+
+                    <input
+                        id="qty"
+                        name="quantity"
+                        type="number"
+                        min="1"
+                        max="{{ medicine.stock }}"
+                        value="1"
+                        required
+                    >
+
+                    <button type="submit" class="btn medicine-add-btn">
+                        Add to Cart
+                    </button>
+                </form>
+            {% else %}
+                <button class="btn" disabled>Out of Stock</button>
+            {% endif %}
+
+        </div>
+    </div>
+
+</section>
+{% endblock %}
+```

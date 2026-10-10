@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Prescription{% endblock %}
+
+{% block content %}
+
+<div class="prescription-page">
+
+    <div class="prescription-header">
+        <h1>Upload Prescription</h1>
+        <p>Upload your valid prescription to order prescription medicines.</p>
+    </div>
+
+
+    <div class="prescription-box">
+
+        <div class="prescription-icon">
+            📄
+        </div>
+
+        <h2>Upload Your Prescription</h2>
+
+        <p class="prescription-info">
+            Please upload a clear image or PDF of your prescription.
+        </p>
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            action="{{ url_for('prescription_upload') }}"
+        >
+
+            <div class="upload-area">
+
+                <label for="prescription">
+                    <span class="upload-icon">⬆️</span>
+
+                    <strong>Choose Prescription</strong>
+
+                    <small>
+                        JPG, JPEG, PNG or PDF
+                    </small>
+
+                </label>
+
+                <input
+                    type="file"
+                    id="prescription"
+                    name="prescription"
+                    accept=".jpg,.jpeg,.png,.pdf"
+                    required
+                >
+
+            </div>
+
+
+            <div class="file-note">
+                Maximum file size: 5 MB
+            </div>
+
+
+            <button type="submit" class="prescription-btn">
+                Upload Prescription
+            </button>
+
+        </form>
+
+    </div>
+
+
+    {% if prescriptions %}
+
+    <div class="prescription-history">
+
+        <h2>My Prescriptions</h2>
+
+        <div class="prescription-list">
+
+            {% for p in prescriptions %}
+
+            <div class="prescription-card">
+
+                <div class="prescription-file">
+                    📄
+                </div>
+
+                <div class="prescription-details">
+
+                    <strong>
+                        {{ p.original_filename }}
+                    </strong>
+
+                    <p>
+                        Uploaded:
+                        {{ p.created_at }}
+                    </p>
+
+                    <span class="prescription-status {{ p.status }}">
+                        {{ p.status|capitalize }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

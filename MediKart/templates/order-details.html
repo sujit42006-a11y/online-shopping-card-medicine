@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Order Details{% endblock %}
+
+{% block content %}
+
+<section class="container section">
+
+    <div class="page-header">
+
+        <h2>Order Details</h2>
+
+        <p>
+            Order #{{ order.order_number }}
+        </p>
+
+    </div>
+
+
+    <div class="order-card">
+
+        <div class="order-top">
+
+            <div>
+                <h3>Order #{{ order.order_number }}</h3>
+
+                <p>
+                    Date: {{ order.created_at }}
+                </p>
+            </div>
+
+            <span class="order-status">
+                {{ order.status }}
+            </span>
+
+        </div>
+
+
+        <hr>
+
+
+        <h3>Items</h3>
+
+        {% for item in items %}
+
+        <div class="checkout-item">
+
+            <div>
+                <strong>{{ item.name }}</strong>
+
+                <p>
+                    Quantity: {{ item.quantity }}
+                </p>
+            </div>
+
+            <strong>
+                ₹{{ "%.2f"|format(item.price * item.quantity) }}
+            </strong>
+
+        </div>
+
+        {% endfor %}
+
+
+        <hr>
+
+
+        <div class="summary-row">
+            <span>Subtotal</span>
+            <strong>
+                ₹{{ "%.2f"|format(order.subtotal) }}
+            </strong>
+        </div>
+
+        <div class="summary-row">
+            <span>Discount</span>
+            <strong>
+                - ₹{{ "%.2f"|format(order.discount) }}
+            </strong>
+        </div>
+
+        <div class="summary-row">
+            <span>Delivery</span>
+            <strong>
+                {% if order.delivery_charge == 0 %}
+                    FREE
+                {% else %}
+                    ₹{{ "%.2f"|format(order.delivery_charge) }}
+                {% endif %}
+            </strong>
+        </div>
+
+
+        <div class="summary-total">
+
+            <span>Total</span>
+
+            <strong>
+                ₹{{ "%.2f"|format(order.total) }}
+            </strong>
+
+        </div>
+
+
+        <hr>
+
+
+        <h3>Delivery Address</h3>
+
+        <div class="order-address">
+
+            <p>
+                {{ order.address }}
+            </p>
+
+            <p>
+                📞 {{ order.phone }}
+            </p>
+
+        </div>
+
+
+        <h3>Payment</h3>
+
+        <p>
+            {{ order.payment_method }}
+        </p>
+
+
+        <br>
+
+        <a href="{{ url_for('orders') }}" class="btn">
+            ← Back to Orders
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

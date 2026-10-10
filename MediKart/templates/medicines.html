@@ -1,0 +1,116 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}Medicines | MediKart{% endblock %}
+
+{% block content %}
+<section class="container section medicines-page">
+
+    <div class="medicines-header">
+        <span class="medicines-label">MEDIKART PHARMACY</span>
+        <h1>Explore Medicines</h1>
+        <p>Find medicines by name, brand, or category.</p>
+    </div>
+
+    <form method="get" class="medicine-filters">
+
+        <input
+            type="search"
+            name="q"
+            value="{{ q }}"
+            placeholder="Search medicines, brand, generic name..."
+            aria-label="Search medicines"
+        >
+
+        <select name="category" aria-label="Filter by category">
+            <option value="">All Categories</option>
+            {% for c in categories %}
+            <option
+                value="{{ c.id }}"
+                {% if cat == c.id|string %}selected{% endif %}
+            >
+                {{ c.name }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <select name="sort" aria-label="Sort medicines">
+            <option value="name" {% if sort == 'name' %}selected{% endif %}>
+                Sort: Name
+            </option>
+            <option value="price_low" {% if sort == 'price_low' %}selected{% endif %}>
+                Price: Low to High
+            </option>
+            <option value="price_high" {% if sort == 'price_high' %}selected{% endif %}>
+                Price: High to Low
+            </option>
+        </select>
+
+        <button type="submit" class="btn filter-btn">Search</button>
+    </form>
+
+    <div class="medicines-results">
+        <h2>Available Medicines</h2>
+
+        <div class="grid medicine-grid">
+            {% for m in medicines %}
+            <article class="card medicine-card">
+
+                <div class="medicine-card-top">
+                    <span class="badge">{{ m.category_name }}</span>
+
+                    {% if m.stock > 0 %}
+                    <span class="medicine-stock">In Stock</span>
+                    {% else %}
+                    <span class="medicine-out">Out of Stock</span>
+                    {% endif %}
+                </div>
+
+                <h3>{{ m.name }}</h3>
+
+                <p class="medicine-brand">
+                    {{ m.brand or 'Brand not specified' }}
+                </p>
+
+                {% if m.pack_size %}
+                <p class="medicine-pack">Pack Size: {{ m.pack_size }}</p>
+                {% endif %}
+
+                <p class="medicine-description">
+                    {{ m.description or 'No description available.' }}
+                </p>
+
+                <div class="medicine-card-bottom">
+                    <div class="medicine-card-price">
+                        <span>Price</span>
+                        <strong>
+                            ₹{{ "%.2f"|format(m.price - m.discount) }}
+                        </strong>
+                    </div>
+
+                    <a class="btn small medicine-details-btn"
+                       href="/medicine/{{ m.id }}">
+                        View Details →
+                    </a>
+                </div>
+
+                {% if m.prescription_required %}
+                <p class="medicine-prescription">
+                    Prescription may be required
+                </p>
+                {% endif %}
+
+            </article>
+            {% else %}
+            <div class="card medicine-empty">
+                <h3>No medicines found</h3>
+                <p>Try another search term or select a different category.</p>
+                <a href="/medicines" class="btn">View All Medicines</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</section>
+{% endblock %}
+```

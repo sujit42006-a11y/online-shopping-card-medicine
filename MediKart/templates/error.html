@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{{ code }} | MediKart{% endblock %}
+
+{% block content %}
+
+<section class="container section error-page">
+
+    <div class="card error-card">
+
+        <div class="error-icon">!</div>
+
+        <h1>{{ code }}</h1>
+
+        <h2>{{ message }}</h2>
+
+        <p>
+            Sorry, we couldn't complete your request.
+            You can return to the homepage and continue shopping.
+        </p>
+
+        <div class="error-actions">
+            <a href="{{ url_for('index') }}" class="btn">
+                Go to Home
+            </a>
+
+            <button type="button" class="btn error-back"
+                    onclick="history.back()">
+                Go Back
+            </button>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

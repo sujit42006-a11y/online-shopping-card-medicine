@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+
+<section class="container section">
+
+    <h2>My Orders</h2>
+
+    <p>
+        <a class="btn small" href="{{ url_for('prescription_upload') }}">
+            Upload Prescription
+        </a>
+    </p>
+
+    <div class="tablewrap">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for o in orders %}
+
+                <tr>
+
+                    <td>
+                        {{ o.order_number }}
+                    </td>
+
+                    <td>
+                        {{ o.created_at }}
+                    </td>
+
+                    <td>
+                        ₹{{ "%.2f"|format(o.total) }}
+                    </td>
+
+                    <td>
+                        {{ o.status }}
+                    </td>
+
+                    <td>
+                        <a
+                            href="{{ url_for('order_detail', oid=o.id) }}"
+                            class="btn small"
+                        >
+                            View
+                        </a>
+                    </td>
+
+                </tr>
+
+                {% else %}
+
+                <tr>
+                    <td colspan="5">
+                        No orders yet.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+{% endblock %}

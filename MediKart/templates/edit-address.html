@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Address{% endblock %}
+
+{% block content %}
+
+<div class="container section">
+
+    <div class="formbox">
+
+        <h2>Edit Address</h2>
+
+        <form method="POST">
+
+            <input
+                type="text"
+                name="label"
+                value="{{ address.label }}"
+                placeholder="Home / Work"
+                required
+            >
+
+            <textarea
+                name="line1"
+                placeholder="Full Address"
+                required
+            >{{ address.line1 }}</textarea>
+
+            <input
+                type="text"
+                name="city"
+                value="{{ address.city }}"
+                placeholder="City"
+                required
+            >
+
+            <input
+                type="text"
+                name="state"
+                value="{{ address.state }}"
+                placeholder="State"
+                required
+            >
+
+            <input
+                type="text"
+                name="pincode"
+                value="{{ address.pincode }}"
+                placeholder="Pincode"
+                required
+            >
+
+            <input
+                type="text"
+                name="phone"
+                value="{{ address.phone }}"
+                placeholder="Phone"
+                required
+            >
+
+            <button type="submit" class="btn">
+                Update Address
+            </button>
+
+            <a
+                href="{{ url_for('addresses') }}"
+                class="btn"
+            >
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

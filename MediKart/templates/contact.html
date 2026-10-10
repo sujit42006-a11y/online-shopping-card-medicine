@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Categories | MediKart{% endblock %}
+
+{% block content %}
+
+<section class="container section categories-page">
+
+    <div class="categories-header">
+        <div>
+            <span class="categories-label">EXPLORE MEDIKART</span>
+            <h1>Medicine Categories</h1>
+            <p>Browse categories to find the medicines you need.</p>
+        </div>
+    </div>
+
+    <div class="grid categories-grid">
+
+        {% for c in categories %}
+
+        <a class="card category-card" href="/category/{{ c.id }}">
+
+            <div class="category-icon">✚</div>
+
+            <div class="category-info">
+                <h3>{{ c.name }}</h3>
+                <p>{{ c.medicine_count }} medicines</p>
+            </div>
+
+            <span class="category-arrow">→</span>
+
+        </a>
+
+        {% else %}
+
+        <div class="card empty-categories">
+            <h3>No categories available</h3>
+            <p>Please check back later for available medicine categories.</p>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

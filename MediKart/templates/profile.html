@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - MediKart{% endblock %}
+
+{% block content %}
+
+<section class="container section">
+
+    <div class="profile-page">
+
+        <!-- Profile Header -->
+        <div class="profile-header">
+
+            <div class="profile-avatar">
+                {{ user.name[0]|upper if user.name else "U" }}
+            </div>
+
+            <div>
+                <h1>My Profile</h1>
+                <p>Manage your personal information and account details.</p>
+            </div>
+
+        </div>
+
+
+        <!-- Profile Content -->
+        <div class="profile-grid">
+
+            <!-- Personal Information -->
+            <div class="profile-card">
+
+                <div class="profile-card-header">
+                    <div>
+                        <h2>Personal Information</h2>
+                        <p>Update your basic account information.</p>
+                    </div>
+                </div>
+
+
+                <form method="post" class="profile-form">
+
+                    <div class="form-group">
+
+                        <label for="name">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value="{{ user.name }}"
+                            placeholder="Enter your full name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            value="{{ user.email }}"
+                            disabled
+                        >
+
+                        <small>
+                            Email address cannot be changed.
+                        </small>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="phone">
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            value="{{ user.phone or '' }}"
+                            placeholder="Enter your phone number"
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn profile-save"
+                    >
+                        Save Changes
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- Account / Address -->
+            <div class="profile-card">
+
+                <div class="profile-card-header">
+
+                    <div>
+                        <h2>Account</h2>
+                        <p>Manage your account settings.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="account-item">
+
+                    <div class="account-icon">
+                        📍
+                    </div>
+
+                    <div class="account-info">
+
+                        <h3>Delivery Addresses</h3>
+
+                        <p>
+                            Add or manage your delivery addresses.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="/addresses"
+                        class="btn small"
+                    >
+                        Manage
+                    </a>
+
+                </div>
+
+
+                <div class="account-item">
+
+                    <div class="account-icon">
+                        🛒
+                    </div>
+
+                    <div class="account-info">
+
+                        <h3>My Orders</h3>
+
+                        <p>
+                            View your previous and current orders.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="/orders"
+                        class="btn small"
+                    >
+                        View
+                    </a>
+
+                </div>
+
+
+                <div class="account-item">
+
+                    <div class="account-icon">
+                        💊
+                    </div>
+
+                    <div class="account-info">
+
+                        <h3>Shop Medicines</h3>
+
+                        <p>
+                            Browse medicines and healthcare products.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="/medicines"
+                        class="btn small"
+                    >
+                        Browse
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

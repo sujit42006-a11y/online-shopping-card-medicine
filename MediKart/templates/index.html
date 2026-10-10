@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}MediKart - Online Medicine Store{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="container">
+        <h1>Your Health, Our Priority</h1>
+        <p>Buy medicines and healthcare products online with ease.</p>
+
+        <a href="/medicines" class="btn">Shop Medicines</a>
+        <a href="/categories" class="btn">Browse Categories</a>
+    </div>
+</section>
+
+<section class="container section">
+    <h2>Featured Medicines</h2>
+
+    <div class="grid">
+        {% for m in medicines %}
+        <div class="card">
+
+            <span class="badge">
+                {{ m.category_name }}
+            </span>
+
+            <h3>{{ m.name }}</h3>
+
+            <p>{{ m.brand }}</p>
+
+            <b>
+                ₹{{ "%.2f"|format(m.price - m.discount) }}
+            </b>
+
+            <br><br>
+
+            <a class="btn small" href="/medicine/{{ m.id }}">
+                View
+            </a>
+
+        </div>
+        {% else %}
+        <p>No medicines available.</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}
